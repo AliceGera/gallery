@@ -114,7 +114,7 @@ class _Body extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          galleryList!.data![index].likes.toString(),
+                                          '${galleryList!.data![index].likes} likes',
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),

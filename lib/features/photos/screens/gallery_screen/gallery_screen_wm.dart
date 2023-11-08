@@ -19,13 +19,10 @@ GalleryScreenWidgetModel galleryScreenWidgetModelFactory(
   BuildContext context,
 ) {
   final appDependencies = context.read<IAppScope>();
-  final configStorage = ConfigSettingsStorageImpl(appDependencies.sharedPreferences);
 
   final model = GalleryScreenModel(
     appDependencies.errorHandler,
     Environment.instance(),
-    appDependencies.applicationRebuilder,
-    configStorage,
     appDependencies.themeService,
     appDependencies.galleryService,
   );

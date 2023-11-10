@@ -2,34 +2,62 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+part 'gallery_response.g.dart';
+
 // ignore: public_member_api_docs
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class GalleryResponse {
-  final String id;
-  final int likes;
-  final String? name;
-  final String url;
+  @JsonKey(name: 'id')
+  final String? id;
+  @JsonKey(name: 'likes')
+  final int? likes;
+  @JsonKey(name: 'user')
+  final UserResponse? user;
+  @JsonKey(name: 'urls')
+  final UrlsResponse? urls;
 
   const GalleryResponse({
     required this.id,
     required this.likes,
-    required this.name,
-    required this.url,
+    required this.user,
+    required this.urls,
   });
 
-  factory GalleryResponse.fromJson(Map<String, dynamic> json) {
-    final id = json['id'] as String;
-    final likes = json['likes'] as int;
-    final user = json['user'] as Map;
-    final name = user['name'] as String?;
-    final urls = json['urls'] as Map;
-    final url = urls['full'] as String;
+  factory GalleryResponse.fromJson(Map<String, dynamic> json) => _$GalleryResponseFromJson(json);
 
-    return GalleryResponse(
-      id: id,
-      likes: likes,
-      name: name,
-      url: url,
-    );
-  }
+  Map<String, dynamic> toJson() => _$GalleryResponseToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UrlsResponse {
+  @JsonKey(name: 'full')
+  final String? full;
+
+  const UrlsResponse({
+    required this.full,
+  });
+
+  factory UrlsResponse.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$UrlsResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UrlsResponseToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UserResponse {
+  @JsonKey(name: 'name')
+  final String? name;
+
+  const UserResponse({
+    required this.name,
+  });
+
+  factory UserResponse.fromJson(
+      Map<String, dynamic> json,
+      ) =>
+      _$UserResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }

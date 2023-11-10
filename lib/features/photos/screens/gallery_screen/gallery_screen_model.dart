@@ -35,10 +35,10 @@ class GalleryScreenModel extends ElementaryModel {
     this._galleryService,
   ) : super(errorHandler: errorHandler);
 
-  Future<List<Gallery>> getGalleryList(/*int count, [int offset = 0]*/) async {
+  Future<List<Gallery>> getGalleryList(int count, [int offset = 0]) async {
     try {
       final List<Gallery> gallery;
-      gallery = await _galleryService.getGallery(/*count, offset*/);
+      gallery = await _galleryService.getGallery(count, offset);
       return gallery;
     } on Object catch (error) {
       rethrow;

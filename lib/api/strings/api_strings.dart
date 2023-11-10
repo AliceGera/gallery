@@ -2,5 +2,5 @@
 
 abstract class GalleryApiStrings {
   static const basePath = 'https://api.unsplash.com';
-  static const photos = 'photos';
+  static const photos = '/photos';
 }

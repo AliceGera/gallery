@@ -9,9 +9,14 @@ class GalleryRepository {
 
   GalleryRepository(this._apiClient);
 
-  Future<List<Gallery>> getGalleryList(/*Gallery gallery*/) async {
+  Future<List<Gallery>> getGalleryList(int count, [int offset = 0]) async {
+    final queries = <String, dynamic>{
+      'count': '$count',
+      'offset': '$offset',
+    };
     return _apiClient.getGallery({
-      'client_id': '896d4f52c589547b2134bd75ed48742db637fa51810b49b607e37e46ab2c0043',
+      'client_id': 'RjiNZ5Z_-RVVdWB2okLb5yRWqn_HZhxI6gNZ8eMrQtQ',
+      ...queries,
     }).then(
       (value) => value.map<Gallery>(mapResponseToGallery).toList(),
     );

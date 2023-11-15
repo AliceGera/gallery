@@ -1,30 +1,33 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter_template/features/common/domain/data/urls_data.dart';
+import 'package:flutter_template/features/common/domain/data/user_data.dart';
+
 class Gallery {
   final String id;
   final int likes;
-  final String name;
-  final String url;
+  final User user;
+  final Urls urls;
 
   // ignore: public_member_api_docs
   Gallery({
     required this.id,
     required this.likes,
-    required this.name,
-    required this.url,
+    required this.user,
+    required this.urls,
   });
 
   Gallery copyWith({
     String? id,
     int? likes,
-    String? name,
-    String? url,
+    User? user,
+    Urls? urls,
   }) {
     return Gallery(
       id: id ?? this.id,
       likes: likes ?? this.likes,
-      name: name ?? this.name,
-      url: url ?? this.url,
+      user: user ?? this.user,
+      urls: urls ?? this.urls,
     );
   }
 }

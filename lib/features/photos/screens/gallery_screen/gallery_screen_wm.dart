@@ -88,13 +88,10 @@ class GalleryScreenWidgetModel extends WidgetModel<GalleryScreen, GalleryScreenM
 
   @override
   void openPhoto(String url, String name, int likes) {
-    router.push(PhotoRouter(/*url:url,name,likes*/));
+    router.push(PhotoRouter(url:url,name:name,likes:likes));
   }
 
   Future<void> _getAllGalleryList() async {
-    if (kDebugMode) {
-      print(111111);
-    }
     if (!isLoading && !isEnd) {
       isLoading = true;
       if (isFirstLoading) {
@@ -140,7 +137,6 @@ abstract class IGalleryScreenWidgetModel extends IWidgetModel {
   ScrollController get controller;
 
   bool get getIsEnd;
-
   /// Places service.
   GalleryService get galleryService;
 

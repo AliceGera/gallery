@@ -1,8 +1,9 @@
 import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/assets/res/resources.dart';
+import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/domain/data/gallery_data.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 import 'package:flutter_template/features/photos/screens/gallery_screen/gallery_screen_wm.dart';
@@ -30,7 +31,7 @@ class GalleryScreen extends ElementaryWidget<IGalleryScreenWidgetModel> {
 }
 
 class _Body extends StatelessWidget {
-  final VoidCallback openPhoto;
+  final OpenPhoto openPhoto;
   final IGalleryScreenWidgetModel wm;
 
   const _Body({
@@ -40,7 +41,9 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return CustomScrollView(
+      controller: wm.controller,
       slivers: <Widget>[
         SliverAppBar(
           backgroundColor: Colors.white.withOpacity(0.75),
@@ -48,7 +51,7 @@ class _Body extends StatelessWidget {
           expandedHeight: 140,
           flexibleSpace: ClipRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final statusBarHeight = MediaQuery.of(context).viewPadding.top;
@@ -85,44 +88,94 @@ class _Body extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: InkWell(
-                            onTap: openPhoto,
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child: Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                        Images.img,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              openPhoto(
+                                galleryList?.data?[index].urls.full ?? '',
+                                galleryList?.data?[index].user.name ?? '',
+                                galleryList?.data?[index].likes ?? 0,
+                              );
+                            },
+                            child: Hero(
+                              tag: 'hero-photo',
+                              child: AspectRatio(
+                                aspectRatio: 1 / 1,
+                                child: Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                      child: SizedBox(
+                                        height: 158,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: ColoredBox(
+                                            color: Colors.white,
+                                            child: FadeInImage.assetNetwork(
+                                              image: galleryList?.data?[index].urls.full ?? '',
+                                              fit: BoxFit.fill,
+                                              width: double.infinity,
+                                              placeholder: 'assets/images/loading1.gif',
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          galleryList!.data![index].name,
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                      child: SizedBox(
+                                        height: 158,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                height: 158,
+                                                width: double.infinity,
+                                                color: Colors.black.withOpacity(0.15),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        galleryList?.data?[index].user.name ?? '',
+                                                        style: AppTextStyle.regular14.value.copyWith(
+                                                          color: Colors.white,
+                                                          shadows: <Shadow>[
+                                                            Shadow(
+                                                              offset: const Offset(3, 3),
+                                                              blurRadius: 15,
+                                                              color: Colors.black.withOpacity(.7),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '${galleryList?.data?[index].likes ?? 0} likes',
+                                                        style: AppTextStyle.regular14.value.copyWith(
+                                                          color: Colors.white,
+                                                          shadows: <Shadow>[
+                                                            Shadow(
+                                                              offset: const Offset(3, 3),
+                                                              blurRadius: 15,
+                                                              color: Colors.black.withOpacity(.7),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                          '${galleryList!.data![index].likes} likes',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -134,6 +187,14 @@ class _Body extends StatelessWidget {
               ),
             );
           },
+        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: size.height * 0.15,
+            child: Center(
+              child: (wm.getIsEnd) ? const Text('') : const CircularProgressIndicator(),
+            ),
+          ),
         ),
       ],
     );

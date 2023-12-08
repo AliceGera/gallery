@@ -8,7 +8,7 @@ class GalleryService {
 
   GalleryService(this._galleryRepository);
 
-  Future<List<Gallery>> getGallery(/*Gallery gallery*/) async {
-    return _galleryRepository.getGalleryList(/*gallery*/);
+  Future<List<Gallery>> getGallery(int count, [int offset = 0]) async {
+    return _galleryRepository.getGalleryList(count, offset);
   }
 }
